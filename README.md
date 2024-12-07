@@ -1,2 +1,2 @@
 # CNC Tools
-Collection of .Net projects for working with CNC GCode.
+Collection of .Net projects for working with CNC GCode/NC.
