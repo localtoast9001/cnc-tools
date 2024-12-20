@@ -13,4 +13,8 @@
     <PackageReference Include="coverlet.collector" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Common.GCode\Common.GCode.csproj" />
+  </ItemGroup>
+
 </Project>
