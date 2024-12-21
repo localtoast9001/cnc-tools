@@ -23,7 +23,7 @@ public class GCodeNumericValue : GCodeValue
     /// <inheritdoc/>
     public override void WriteTo(IO.GCodeWriter writer)
     {
-        if (this.IsInteger)
+        if (!this.IsInteger)
         {
             writer.WriteValue(this.Value);
         }

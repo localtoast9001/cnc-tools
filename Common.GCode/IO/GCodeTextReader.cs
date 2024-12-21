@@ -18,7 +18,7 @@ public class GCodeTextReader : GCodeReader
     private GCodeValueType valueType;
     private bool isBlockDeleteLine;
     private int lineNumber = -1;
-    private char wordLetter;
+    private Code code;
     private string? comment;
 
     /// <summary>
@@ -57,7 +57,7 @@ public class GCodeTextReader : GCodeReader
     public override int LineNumber => this.lineNumber;
 
     /// <inheritdoc/>
-    public override char WordLetter => this.wordLetter;
+    public override Code Code => this.code;
 
     /// <inheritdoc/>
     public override string? Comment => this.comment;
@@ -221,7 +221,7 @@ public class GCodeTextReader : GCodeReader
         else if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))
         {
             this.tokenType = GCodeTokenType.WordStart;
-            this.wordLetter = char.ToUpperInvariant((char)ch);
+            this.code = (Code)char.ToUpperInvariant((char)ch);
             this.inner.Read();
         }
         else

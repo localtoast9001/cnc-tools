@@ -106,10 +106,10 @@ public class GCodeTextWriter : GCodeWriter
     }
 
     /// <inheritdoc/>
-    public override void StartWord(char letter)
+    public override void StartWord(Code code)
     {
         this.PushState(WriterState.Word);
-        this.inner.Write(letter);
+        this.inner.Write((char)code);
     }
 
     /// <inheritdoc/>

@@ -108,7 +108,7 @@ public class GCodeDocument
 
     private static GCodeWordSegment LoadWord(IO.GCodeReader reader)
     {
-        Code code = (Code)reader.WordLetter;
+        Code code = reader.Code;
         if (!reader.Read())
         {
             throw new InvalidOperationException("Expected value for word, not end of file.");

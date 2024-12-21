@@ -97,8 +97,8 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     /// <summary>
     /// Starts a new word on the current line.
     /// </summary>
-    /// <param name="letter">The letter to start the word.</param>
-    public abstract void StartWord(char letter);
+    /// <param name="code">The code letter to start the word.</param>
+    public abstract void StartWord(Code code);
 
     /// <summary>
     /// Ends the current word.
@@ -164,11 +164,11 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     /// <summary>
     /// Writes a word with an integer value.
     /// </summary>
-    /// <param name="letter">The letter.</param>
+    /// <param name="code">The code letter.</param>
     /// <param name="value">The integer value.</param>
-    public virtual void WriteWord(char letter, int value)
+    public virtual void WriteWord(Code code, int value)
     {
-        this.StartWord(letter);
+        this.StartWord(code);
         this.WriteValue(value);
         this.EndWord();
     }
@@ -176,11 +176,11 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     /// <summary>
     /// Writes a word with a single precision value.
     /// </summary>
-    /// <param name="letter">The letter.</param>
+    /// <param name="code">The code letter.</param>
     /// <param name="value">The single precision value.</param>
-    public virtual void WriteWord(char letter, float value)
+    public virtual void WriteWord(Code code, float value)
     {
-        this.StartWord(letter);
+        this.StartWord(code);
         this.WriteValue(value);
         this.EndWord();
     }
@@ -188,11 +188,11 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     /// <summary>
     /// Writes a word with a double precision value.
     /// </summary>
-    /// <param name="letter">The letter.</param>
+    /// <param name="code">The code letter.</param>
     /// <param name="value">The double precision value.</param>
-    public virtual void WriteWord(char letter, double value)
+    public virtual void WriteWord(Code code, double value)
     {
-        this.StartWord(letter);
+        this.StartWord(code);
         this.WriteValue(value);
         this.EndWord();
     }

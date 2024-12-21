@@ -42,6 +42,6 @@ public class GCodeLine
             segment.WriteTo(writer);
         }
 
-        writer.EndFile();
+        writer.EndLine();
     }
 }

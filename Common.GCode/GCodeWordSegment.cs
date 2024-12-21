@@ -28,7 +28,7 @@ public class GCodeWordSegment : GCodeSegment
             throw new InvalidOperationException("The Value property must not be null.");
         }
 
-        writer.StartWord((char)this.Code);
+        writer.StartWord(this.Code);
         this.Value.WriteTo(writer);
         writer.EndWord();
     }

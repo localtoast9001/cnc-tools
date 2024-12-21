@@ -136,7 +136,7 @@ public abstract class GCodeReader : IDisposable, IAsyncDisposable
     /// <summary>
     /// Gets the letter at the start of the current word.
     /// </summary>
-    public abstract char WordLetter { get; }
+    public abstract Code Code { get; }
 
     /// <summary>
     /// Gets the text of the current comment.
