@@ -9,10 +9,13 @@
     <PackageVersion Include="MSTest.TestAdapter" Version="3.0.4" />
     <PackageVersion Include="MSTest.TestFramework" Version="3.0.4" />
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+    <PackageVersion Include="SkiaSharp" Version="3.116.1" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.116.1" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageVersion>
+    <PackageVersion Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
     <PackageVersion Include="System.Threading.Tasks.Extensions" Version="4.6.0" />
   </ItemGroup>
 </Project>

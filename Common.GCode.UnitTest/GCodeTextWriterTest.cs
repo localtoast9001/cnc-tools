@@ -81,9 +81,9 @@ public class GCodeTextWriterTest
         using var target = new GCodeTextWriter(new StringWriter(sb));
         target.StartFile();
         target.StartLine();
-        target.WriteWord('G', 1);
-        target.WriteWord('X', 5.5);
-        target.WriteWord('Y', -4.75);
+        target.WriteWord(Code.G, 1);
+        target.WriteWord(Code.X, 5.5);
+        target.WriteWord(Code.Y, -4.75);
         target.EndLine();
         target.EndFile();
         string[] lines = sb.ToString().Split('\n').Select(e => e.Trim()).ToArray();

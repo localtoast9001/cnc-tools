@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.GCode.UnitTest", "Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.GCode", "Common.GCode\Common.GCode.csproj", "{74ED189E-7F56-4979-84FC-C6650B80EAF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "img2gcode", "img2gcode\img2gcode.csproj", "{D5DFBF7C-E46B-46C6-A9E5-E018DA6986D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{74ED189E-7F56-4979-84FC-C6650B80EAF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74ED189E-7F56-4979-84FC-C6650B80EAF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74ED189E-7F56-4979-84FC-C6650B80EAF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5DFBF7C-E46B-46C6-A9E5-E018DA6986D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5DFBF7C-E46B-46C6-A9E5-E018DA6986D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5DFBF7C-E46B-46C6-A9E5-E018DA6986D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5DFBF7C-E46B-46C6-A9E5-E018DA6986D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

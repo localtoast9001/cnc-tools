@@ -34,6 +34,20 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     public virtual GCodeWriterSettings? Settings { get; }
 
     /// <summary>
+    /// Creates a writer to write to the given stream.
+    /// </summary>
+    /// <param name="stream">The stream to write to.</param>
+    /// <param name="settings">Optional writer settings.</param>
+    /// <returns>
+    /// A new instance of the <see cref="GCodeWriter"/> class.
+    /// </returns>
+    public static GCodeWriter Create(Stream stream, GCodeWriterSettings? settings = null)
+    {
+        GCodeWriterSettings newSettings = settings ?? new GCodeWriterSettings() { CloseInput = true };
+        return new GCodeTextWriter(new StreamWriter(stream, System.Text.Encoding.ASCII, 512, leaveOpen: !newSettings.CloseInput), newSettings);
+    }
+
+    /// <summary>
     /// Releases all resources used by this instance.
     /// </summary>
     public void Dispose()
@@ -97,8 +111,8 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     /// <summary>
     /// Starts a new word on the current line.
     /// </summary>
-    /// <param name="letter">The letter to start the word.</param>
-    public abstract void StartWord(char letter);
+    /// <param name="code">The code letter to start the word.</param>
+    public abstract void StartWord(Code code);
 
     /// <summary>
     /// Ends the current word.
@@ -164,11 +178,11 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     /// <summary>
     /// Writes a word with an integer value.
     /// </summary>
-    /// <param name="letter">The letter.</param>
+    /// <param name="code">The code letter.</param>
     /// <param name="value">The integer value.</param>
-    public virtual void WriteWord(char letter, int value)
+    public virtual void WriteWord(Code code, int value)
     {
-        this.StartWord(letter);
+        this.StartWord(code);
         this.WriteValue(value);
         this.EndWord();
     }
@@ -176,11 +190,11 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     /// <summary>
     /// Writes a word with a single precision value.
     /// </summary>
-    /// <param name="letter">The letter.</param>
+    /// <param name="code">The code letter.</param>
     /// <param name="value">The single precision value.</param>
-    public virtual void WriteWord(char letter, float value)
+    public virtual void WriteWord(Code code, float value)
     {
-        this.StartWord(letter);
+        this.StartWord(code);
         this.WriteValue(value);
         this.EndWord();
     }
@@ -188,11 +202,11 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     /// <summary>
     /// Writes a word with a double precision value.
     /// </summary>
-    /// <param name="letter">The letter.</param>
+    /// <param name="code">The code letter.</param>
     /// <param name="value">The double precision value.</param>
-    public virtual void WriteWord(char letter, double value)
+    public virtual void WriteWord(Code code, double value)
     {
-        this.StartWord(letter);
+        this.StartWord(code);
         this.WriteValue(value);
         this.EndWord();
     }
