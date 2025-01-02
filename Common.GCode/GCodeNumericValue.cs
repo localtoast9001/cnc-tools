@@ -11,6 +11,33 @@ namespace Common.GCode;
 public class GCodeNumericValue : GCodeValue
 {
     /// <summary>
+    /// Initializes a new instance of the <see cref="GCodeNumericValue"/> class.
+    /// </summary>
+    public GCodeNumericValue()
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GCodeNumericValue"/> class.
+    /// </summary>
+    /// <param name="value">Integer value.</param>
+    public GCodeNumericValue(int value)
+    {
+        this.Value = value;
+        this.IsInteger = true;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GCodeNumericValue"/> class.
+    /// </summary>
+    /// <param name="value">Decimal value.</param>
+    public GCodeNumericValue(decimal value)
+    {
+        this.Value = value;
+        this.IsInteger = false;
+    }
+
+    /// <summary>
     /// Gets or sets the value.
     /// </summary>
     public decimal Value { get; set; }

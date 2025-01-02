@@ -11,6 +11,24 @@ namespace Common.GCode;
 public class GCodeCommentSegment : GCodeSegment
 {
     /// <summary>
+    /// Initializes a new instance of the <see cref="GCodeCommentSegment"/> class.
+    /// </summary>
+    public GCodeCommentSegment()
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GCodeCommentSegment"/> class.
+    /// </summary>
+    /// <param name="text">The comment text.</param>
+    /// <param name="isMessage"><c>True</c> if the comment is a message; otherwise, <c>false</c>.</param>
+    public GCodeCommentSegment(string text, bool isMessage = false)
+    {
+        this.Text = text;
+        this.IsMessage = isMessage;
+    }
+
+    /// <summary>
     /// Gets or sets the text of the comment.
     /// </summary>
     public string? Text { get; set; }

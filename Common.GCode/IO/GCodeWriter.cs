@@ -34,6 +34,20 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     public virtual GCodeWriterSettings? Settings { get; }
 
     /// <summary>
+    /// Creates a writer to write to the given stream.
+    /// </summary>
+    /// <param name="stream">The stream to write to.</param>
+    /// <param name="settings">Optional writer settings.</param>
+    /// <returns>
+    /// A new instance of the <see cref="GCodeWriter"/> class.
+    /// </returns>
+    public static GCodeWriter Create(Stream stream, GCodeWriterSettings? settings = null)
+    {
+        GCodeWriterSettings newSettings = settings ?? new GCodeWriterSettings() { CloseInput = true };
+        return new GCodeTextWriter(new StreamWriter(stream, System.Text.Encoding.ASCII, 512, leaveOpen: !newSettings.CloseInput), newSettings);
+    }
+
+    /// <summary>
     /// Releases all resources used by this instance.
     /// </summary>
     public void Dispose()
