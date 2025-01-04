@@ -40,7 +40,7 @@ public class GCodeTextWriterTest
     {
         StringBuilder sb = new();
         var writer = new StringWriter(sb);
-        using (var target = new GCodeTextWriter(writer, new GCodeWriterSettings() { CloseInput = true }))
+        using (var target = new GCodeTextWriter(writer, new GCodeWriterSettings() { CloseOutput = true }))
         {
         }
 

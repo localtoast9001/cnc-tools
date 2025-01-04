@@ -62,8 +62,6 @@ public class GCodeTextReader : GCodeReader
     /// <inheritdoc/>
     public override string? Comment => this.comment;
 
-    private bool CloseInput => this.Settings?.CloseInput ?? true;
-
     private ReaderState State { get; set; }
 
     /// <inheritdoc/>
@@ -76,7 +74,7 @@ public class GCodeTextReader : GCodeReader
                 return this.ReadStartFile();
             case GCodeTokenType.FileStart:
             case GCodeTokenType.LineEnd:
-                this.ReadLineStart();
+                this.ReadFileEndOrLineStart();
                 break;
             case GCodeTokenType.LineStart:
             case GCodeTokenType.CommentOrMessage:
@@ -93,23 +91,16 @@ public class GCodeTextReader : GCodeReader
     }
 
     /// <inheritdoc/>
-    protected override ValueTask DisposeAsyncCore()
+    public override ValueTask CloseAsync(CancellationToken cancellationToken = default)
     {
-        if (this.CloseInput)
-        {
-            this.inner.Dispose();
-        }
-
+        this.Close();
         return default;
     }
 
     /// <inheritdoc/>
-    protected override void Dispose(bool disposing)
+    public override void Close()
     {
-        if (disposing && this.CloseInput)
-        {
-            this.inner.Dispose();
-        }
+        this.inner.Close();
     }
 
     private void SkipWhiteSpace()
@@ -138,6 +129,20 @@ public class GCodeTextReader : GCodeReader
         this.State = ReaderState.LineStart;
         this.tokenType = GCodeTokenType.FileStart;
         return true;
+    }
+
+    private void ReadFileEndOrLineStart()
+    {
+        int ch = this.inner.Peek();
+        if (ch == '%')
+        {
+            _ = this.inner.ReadLine();
+            this.tokenType = GCodeTokenType.FileEnd;
+        }
+        else
+        {
+            this.ReadLineStart();
+        }
     }
 
     private void ReadLineStart()

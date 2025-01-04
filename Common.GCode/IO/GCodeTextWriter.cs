@@ -3,6 +3,7 @@
 //     Copyright (C) Jon Rowlett. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
+
 namespace Common.GCode.IO;
 
 /// <summary>
@@ -41,10 +42,6 @@ public class GCodeTextWriter : GCodeWriter
     private WriterState CurrentState => this.stateStack.Count > 0 ?
         this.stateStack.Peek() :
         WriterState.None;
-
-    private bool CloseInput => this.Settings?.CloseInput ?? false;
-
-    private int MaxLineNumber => this.Settings?.MaxLineNumber ?? GCodeWriterSettings.DefaultMaxLineNumber;
 
     /// <inheritdoc/>
     public override void StartFile()
@@ -214,23 +211,16 @@ public class GCodeTextWriter : GCodeWriter
     }
 
     /// <inheritdoc/>
-    protected override ValueTask DisposeAsyncCore()
+    public override void Close()
     {
-        if (this.CloseInput)
-        {
-            this.inner.Dispose();
-        }
-
-        return default;
+        this.inner.Close();
     }
 
     /// <inheritdoc/>
-    protected override void Dispose(bool disposing)
+    public override ValueTask CloseAsync(CancellationToken cancellationToken = default)
     {
-        if (disposing && this.CloseInput)
-        {
-            this.inner.Dispose();
-        }
+        this.Close();
+        return default;
     }
 
     private static string EscapeComment(string source)

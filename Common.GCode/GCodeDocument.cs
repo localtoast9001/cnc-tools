@@ -60,6 +60,75 @@ public class GCodeDocument
     }
 
     /// <summary>
+    /// Loads a document from a file.
+    /// </summary>
+    /// <param name="path">The path to the file.</param>
+    /// <returns>
+    /// A new instance of the <see cref="GCodeDocument"/> class.
+    /// </returns>
+    public static GCodeDocument Load(string path)
+    {
+        using IO.GCodeReader reader = IO.GCodeReader.Create(path);
+        return Load(reader);
+    }
+
+    /// <summary>
+    /// Loads a document from a stream.
+    /// </summary>
+    /// <param name="stream">The input stream.</param>
+    /// <returns>
+    /// A new instance of the <see cref="GCodeDocument"/> class.
+    /// </returns>
+    public static GCodeDocument Load(Stream stream)
+    {
+        using IO.GCodeReader reader = IO.GCodeReader.Create(stream);
+        return Load(reader);
+    }
+
+    /// <summary>
+    /// Loads a document from a given text reader.
+    /// </summary>
+    /// <param name="reader">The input text reader.</param>
+    /// <returns>
+    /// A new instance of the <see cref="GCodeDocument"/> class.
+    /// </returns>
+    public static GCodeDocument Load(TextReader reader)
+    {
+        using IO.GCodeReader r = IO.GCodeReader.Create(reader);
+        return Load(r);
+    }
+
+    /// <summary>
+    /// Saves a document to an output file.
+    /// </summary>
+    /// <param name="path">The path to the file to write.</param>
+    public void Save(string path)
+    {
+        using IO.GCodeWriter writer = IO.GCodeWriter.Create(path);
+        this.WriteTo(writer);
+    }
+
+    /// <summary>
+    /// Saves the document to the given output stream.
+    /// </summary>
+    /// <param name="stream">The output stream.</param>
+    public void Save(Stream stream)
+    {
+        using IO.GCodeWriter writer = IO.GCodeWriter.Create(stream);
+        this.WriteTo(writer);
+    }
+
+    /// <summary>
+    /// Saves the document to the given text writer.
+    /// </summary>
+    /// <param name="writer">The text writer.</param>
+    public void Save(TextWriter writer)
+    {
+        using IO.GCodeWriter w = IO.GCodeWriter.Create(writer);
+        this.WriteTo(w);
+    }
+
+    /// <summary>
     /// Writes the document to a <see cref="IO.GCodeWriter"/>.
     /// </summary>
     /// <param name="writer">The writer.</param>
