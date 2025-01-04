@@ -18,7 +18,7 @@ public class GCodeWriterSettings : ICloneable
 
     private readonly bool isReadOnly;
     private bool @async;
-    private bool closeInput;
+    private bool closeOutput;
     private int maxLineNumber = DefaultMaxLineNumber;
 
     /// <summary>
@@ -46,7 +46,7 @@ public class GCodeWriterSettings : ICloneable
         }
 
         this.@async = source.Async;
-        this.closeInput = source.CloseInput;
+        this.closeOutput = source.CloseOutput;
         this.maxLineNumber = source.MaxLineNumber;
         this.isReadOnly = isReadOnly;
     }
@@ -71,17 +71,17 @@ public class GCodeWriterSettings : ICloneable
     /// <summary>
     /// Gets or sets a value indicating whether the underlying stream or <see cref="TextWriter"/> should be closed when the writer is closed.
     /// </summary>
-    public bool CloseInput
+    public bool CloseOutput
     {
         get
         {
-            return this.closeInput;
+            return this.closeOutput;
         }
 
         set
         {
             this.ThrowOnReadOnly();
-            this.closeInput = value;
+            this.closeOutput = value;
         }
     }
 

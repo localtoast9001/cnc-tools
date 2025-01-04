@@ -34,6 +34,30 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     public virtual GCodeWriterSettings? Settings { get; }
 
     /// <summary>
+    /// Gets a value indicating whether to close the underlying output on close.
+    /// </summary>
+    protected bool CloseOutput => this.Settings?.CloseOutput ?? false;
+
+    /// <summary>
+    /// Gets the maximum custom line number allowed to be output.
+    /// </summary>
+    protected int MaxLineNumber => this.Settings?.MaxLineNumber ?? GCodeWriterSettings.DefaultMaxLineNumber;
+
+    /// <summary>
+    /// Creates a writer to write to an output file.
+    /// </summary>
+    /// <param name="path">The path to the output file.</param>
+    /// <param name="settings">Optional writer settings.</param>
+    /// <returns>
+    /// A new instance of the <see cref="GCodeWriter"/> class.
+    /// </returns>
+    public static GCodeWriter Create(string path, GCodeWriterSettings? settings = null)
+    {
+        GCodeWriterSettings newSettings = settings ?? new GCodeWriterSettings() { CloseOutput = true };
+        return new GCodeTextWriter(new StreamWriter(path, false, System.Text.Encoding.ASCII, 512), newSettings);
+    }
+
+    /// <summary>
     /// Creates a writer to write to the given stream.
     /// </summary>
     /// <param name="stream">The stream to write to.</param>
@@ -43,8 +67,21 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     /// </returns>
     public static GCodeWriter Create(Stream stream, GCodeWriterSettings? settings = null)
     {
-        GCodeWriterSettings newSettings = settings ?? new GCodeWriterSettings() { CloseInput = true };
-        return new GCodeTextWriter(new StreamWriter(stream, System.Text.Encoding.ASCII, 512, leaveOpen: !newSettings.CloseInput), newSettings);
+        GCodeWriterSettings newSettings = settings ?? new GCodeWriterSettings() { CloseOutput = true };
+        return new GCodeTextWriter(new StreamWriter(stream, System.Text.Encoding.ASCII, 512, leaveOpen: !newSettings.CloseOutput), newSettings);
+    }
+
+    /// <summary>
+    /// Creates a writer to write to the given text writer.
+    /// </summary>
+    /// <param name="writer">The writer to write to.</param>
+    /// <param name="settings">Optional writer settings.</param>
+    /// <returns>
+    /// A new instance of the <see cref="GCodeWriter"/> class.
+    /// </returns>
+    public static GCodeWriter Create(TextWriter writer, GCodeWriterSettings? settings = null)
+    {
+        return new GCodeTextWriter(writer, settings);
     }
 
     /// <summary>
@@ -70,20 +107,14 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     /// <summary>
     /// Closes the current writer and releases any associated system resources.
     /// </summary>
-    public virtual void Close()
-    {
-        this.Dispose(true);
-    }
+    public abstract void Close();
 
     /// <summary>
     /// Closes the current writer and releases any associated system resources.
     /// </summary>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A <see cref="ValueTask"/> for the async operation.</returns>
-    public virtual ValueTask CloseAsync(CancellationToken cancellationToken = default)
-    {
-        return this.DisposeAsyncCore();
-    }
+    public abstract ValueTask CloseAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Starts a file.
@@ -217,6 +248,10 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
     protected virtual void Dispose(bool disposing)
     {
+        if (disposing && this.CloseOutput)
+        {
+            this.Close();
+        }
     }
 
     /// <summary>
@@ -225,6 +260,8 @@ public abstract class GCodeWriter : IDisposable, IAsyncDisposable
     /// <returns>A <see cref="ValueTask"/> for the core async dispose operation.</returns>
     protected virtual ValueTask DisposeAsyncCore()
     {
-        return default;
+        return this.CloseOutput ?
+            this.CloseAsync() :
+            default;
     }
 }

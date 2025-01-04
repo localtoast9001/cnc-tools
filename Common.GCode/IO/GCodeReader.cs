@@ -144,22 +144,62 @@ public abstract class GCodeReader : IDisposable, IAsyncDisposable
     public abstract string? Comment { get; }
 
     /// <summary>
+    /// Gets a value indicating whether to close the input.
+    /// </summary>
+    protected bool CloseInput => this.Settings?.CloseInput ?? true;
+
+    /// <summary>
+    /// Creates a reader using the given file as input.
+    /// </summary>
+    /// <param name="path">The path to the input file.</param>
+    /// <param name="settings">Optional reader settings.</param>
+    /// <returns>
+    /// A new instance of the <see cref="GCodeReader"/> class.
+    /// </returns>
+    public static GCodeReader Create(string path, GCodeReaderSettings? settings = null)
+    {
+        GCodeReaderSettings newSettings = settings ?? new GCodeReaderSettings() { CloseInput = true };
+        return new GCodeTextReader(new StreamReader(path, System.Text.Encoding.ASCII, false, 512), newSettings);
+    }
+
+    /// <summary>
+    /// Creates a reader using the given stream as input.
+    /// </summary>
+    /// <param name="stream">The input stream.</param>
+    /// <param name="settings">Optional reader settings.</param>
+    /// <returns>
+    /// A new instance of the <see cref="GCodeReader"/> class.
+    /// </returns>
+    public static GCodeReader Create(Stream stream, GCodeReaderSettings? settings = null)
+    {
+        GCodeReaderSettings newSettings = settings ?? new GCodeReaderSettings() { CloseInput = true };
+        return new GCodeTextReader(new StreamReader(stream, System.Text.Encoding.ASCII, false, 512, leaveOpen: !newSettings.CloseInput), newSettings);
+    }
+
+    /// <summary>
+    /// Creates a reader using the given text reader as input.
+    /// </summary>
+    /// <param name="reader">The input text reader.</param>
+    /// <param name="settings">Optional reader settings.</param>
+    /// <returns>
+    /// A new instance of the <see cref="GCodeReader"/> class.
+    /// </returns>
+    public static GCodeReader Create(TextReader reader, GCodeReaderSettings? settings = null)
+    {
+        return new GCodeTextReader(reader, settings);
+    }
+
+    /// <summary>
     /// Closes the current reader and releases any associated system resources.
     /// </summary>
-    public virtual void Close()
-    {
-        this.Dispose(true);
-    }
+    public abstract void Close();
 
     /// <summary>
     /// Closes the current reader and releases any associated system resources.
     /// </summary>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>A <see cref="ValueTask"/> for the async operation.</returns>
-    public virtual ValueTask CloseAsync(CancellationToken cancellationToken = default)
-    {
-        return this.DisposeAsyncCore();
-    }
+    public abstract ValueTask CloseAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Releases all resources used by this instance.
@@ -195,6 +235,10 @@ public abstract class GCodeReader : IDisposable, IAsyncDisposable
     /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
     protected virtual void Dispose(bool disposing)
     {
+        if (disposing && this.CloseInput)
+        {
+            this.Close();
+        }
     }
 
     /// <summary>
@@ -203,6 +247,8 @@ public abstract class GCodeReader : IDisposable, IAsyncDisposable
     /// <returns>A <see cref="ValueTask"/> for the core async dispose operation.</returns>
     protected virtual ValueTask DisposeAsyncCore()
     {
-        return default;
+        return this.CloseInput ?
+            this.CloseAsync() :
+            default;
     }
 }
