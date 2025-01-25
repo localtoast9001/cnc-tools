@@ -128,7 +128,7 @@ internal class ScanConverter
                     this.Output.Lines.Add(new GCodeLine(
                         GCodeWordSegment.FromCommand(CommandCode.RapidPosition),
                         new GCodeWordSegment(Code.X, (decimal)(segment.Start * this.Resolution)),
-                        new GCodeWordSegment(Code.Y, (decimal)(y * this.Resolution))));
+                        new GCodeWordSegment(Code.Y, (decimal)((this.NormalizedInput.Height - y) * this.Resolution))));
 
                     this.Output.Lines.Add(new GCodeLine(
                         GCodeWordSegment.FromCommand(CommandCode.SpindleOnClockwise),

@@ -5,9 +5,12 @@
 //-----------------------------------------------------------------------
 namespace Common.GCode.IO;
 
+using System.Runtime.Serialization;
+
 /// <summary>
 /// Exception thrown on input errors inside <see cref="GCodeTextReader"/>.
 /// </summary>
+[Serializable]
 public class GCodeTextReaderException : Exception
 {
     /// <summary>
@@ -34,6 +37,16 @@ public class GCodeTextReaderException : Exception
     /// <param name="innerException">Optional inner exception.</param>
     public GCodeTextReaderException(string message, Exception? innerException)
     : base(message, innerException)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GCodeTextReaderException"/> class.
+    /// </summary>
+    /// <param name="info">Serialization info.</param>
+    /// <param name="context">Streaming context.</param>
+    protected GCodeTextReaderException(SerializationInfo info, StreamingContext context)
+    : base(info, context)
     {
     }
 }
