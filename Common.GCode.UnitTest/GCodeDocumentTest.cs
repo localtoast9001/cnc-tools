@@ -53,6 +53,46 @@ public class GCodeDocumentTest
     }
 
     /// <summary>
+    /// Unit test for the <see cref="GCodeDocument.Load(Stream)"/> method.
+    /// </summary>
+    [TestMethod]
+    public void LoadStreamTest()
+    {
+        using var ms = new MemoryStream();
+        using var writer = new StreamWriter(ms);
+        writer.WriteLine("%");
+        writer.WriteLine("G00 X0 Y0 Z0");
+        writer.WriteLine("%");
+        writer.Flush();
+        ms.Seek(0, SeekOrigin.Begin);
+
+        // NOTE: No need to validate all aspects of the read, just that the whole doc is read.
+        var target = GCodeDocument.Load(ms);
+        Assert.IsNotNull(target);
+        Assert.AreEqual(1, target.Lines.Count);
+        var line = target.Lines[0];
+        Assert.AreEqual(4, line.Segments.Count);
+        ms.Close();
+    }
+
+    /// <summary>
+    /// Unit test for the <see cref="GCodeDocument.Load(TextReader)"/> method.
+    /// </summary>
+    [TestMethod]
+    public void LoadTextReaderTest()
+    {
+        using var reader = new StringReader("%\nG00 X0 Y0 Z0\n%");
+
+        // NOTE: No need to validate all aspects of the read, just that the whole doc is read.
+        var target = GCodeDocument.Load(reader);
+        Assert.IsNotNull(target);
+        Assert.AreEqual(1, target.Lines.Count);
+        var line = target.Lines[0];
+        Assert.AreEqual(4, line.Segments.Count);
+        reader.Close();
+    }
+
+    /// <summary>
     /// Tests loading the hello world sample from the spec.
     /// </summary>
     [TestMethod]
