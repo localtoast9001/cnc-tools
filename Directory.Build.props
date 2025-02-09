@@ -8,6 +8,10 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <OutRoot>$(MSBuildThisFileDirectory)out/</OutRoot>
     <BaseOutputPath>$(OutRoot)bin/$(MSBuildProjectName)/</BaseOutputPath>
+    <PackageOutputPath>$(OutRoot)packages</PackageOutputPath>
+    <Authors>J. M. Rowlett</Authors>
+    <Company>J. M. Rowlett</Company>
+    <Copyright>(C) J. M. Rowlett. All rights reserved.</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
