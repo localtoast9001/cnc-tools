@@ -22,13 +22,22 @@ jobs:
         global-json-file: global.json
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
+    - name: Build Debug
+      run: dotnet build --no-restore -p:Configuration=Debug
+    - name: Build Release
+      run: dotnet build --no-restore -p:Configuration=Release
+    - name: Pack Release
+      run: dotnet pack --no-restore --no-build -p:Configuration=Release
     - name: Upload bin
       uses: actions/upload-artifact@v4
       with:
         name: bin
         path: out/bin
+    - name: Upload packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: packages
+        path: out/packages
     - name: Test
       run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory out/TestResults
     - name: Upload Test Results
