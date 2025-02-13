@@ -3,10 +3,10 @@
 //     Copyright (C) Jon Rowlett. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Common.ImageToGCode;
+namespace CncTools.Image2GCode;
 
 using System.CommandLine;
-using Common.GCode;
+using CncTools.GCode;
 using SkiaSharp;
 
 /// <summary>

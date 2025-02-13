@@ -26,6 +26,8 @@ jobs:
       run: dotnet build --no-restore -p:Configuration=Debug
     - name: Build Release
       run: dotnet build --no-restore -p:Configuration=Release
+    - name: Pack Debug
+      run: dotnet pack --no-restore --no-build -p:Configuration=Debug
     - name: Pack Release
       run: dotnet pack --no-restore --no-build -p:Configuration=Release
     - name: Upload bin

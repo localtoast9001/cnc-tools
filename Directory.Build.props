@@ -4,14 +4,26 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
+    <Platform Condition="'$(Platform)'==''">AnyCPU</Platform>
     <LangVersion>10.0</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <OutRoot>$(MSBuildThisFileDirectory)out/</OutRoot>
     <BaseOutputPath>$(OutRoot)bin/$(MSBuildProjectName)/</BaseOutputPath>
-    <PackageOutputPath>$(OutRoot)packages</PackageOutputPath>
+    <PackageOutputPath>$(OutRoot)packages/$(Configuration)/</PackageOutputPath>
     <Authors>J. M. Rowlett</Authors>
     <Company>J. M. Rowlett</Company>
     <Copyright>(C) J. M. Rowlett. All rights reserved.</Copyright>
+    <RepositoryUrl>https://github.com/localtoast9001/cnc-tools.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>True</IncludeSymbols>
+    <Product>CNC Tools</Product>
+    <ReleaseTag Condition="'$(GITHUB_REF_NAME)'!='' and '$(GITHUB_REF_TYPE)'=='tag'">$(GITHUB_REF_NAME)</ReleaseTag>
+    <ReleaseTag Condition="'$(ReleaseTag)'==''">0.1.0-alpha</ReleaseTag>
+    <ReleaseBaseVersion>$(ReleaseTag.Split('-')[0])</ReleaseBaseVersion>
+    <PreReleaseTag Condition="'$(ReleaseTag)'!='$(ReleaseBaseVersion)'">$(ReleaseTag.Substring($([MSBuild]::Add($(ReleaseBaseVersion.Length),1))))</PreReleaseTag>
+    <AssemblyVersion>$(ReleaseBaseVersion).0</AssemblyVersion>
+    <PackageVersion>$(ReleaseBaseVersion)-$(PreReleaseTag)</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
