@@ -19,8 +19,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>Common.ImageToGCode</RootNamespace>
-    <PackageID>Common.ImageToGCode</PackageID>
+    <RootNamespace>CncTools.Image2GCode</RootNamespace>
+    <PackageID>CncTools.Image2GCode</PackageID>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>img2gcode</ToolCommandName>
     <PackageReadmeFile>README.md</PackageReadmeFile>
