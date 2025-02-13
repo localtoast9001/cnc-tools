@@ -3,7 +3,7 @@
 //     Copyright (C) Jon Rowlett. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Common.GCode.IO;
+namespace CncTools.GCode.IO;
 
 /// <summary>
 /// Structured writer for GCode/RS274/NGC files.

@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Common.GCode.IO;
+namespace CncTools.GCode.IO;
 
 /// <summary>
 /// Structured text writer for GCode/RS274/NGC files.

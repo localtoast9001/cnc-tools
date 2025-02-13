@@ -3,7 +3,7 @@
 //     Copyright (C) Jon Rowlett. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Common.GCode.UnitTest;
+namespace CncTools.GCode.UnitTest;
 
 using System.Text;
 

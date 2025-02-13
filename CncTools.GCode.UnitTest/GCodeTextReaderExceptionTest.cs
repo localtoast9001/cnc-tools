@@ -3,9 +3,9 @@
 //     Copyright (C) Jon Rowlett. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Common.GCode.UnitTest;
+namespace CncTools.GCode.UnitTest;
 
-using Common.GCode.IO;
+using CncTools.GCode.IO;
 
 /// <summary>
 /// Unit test for the <see cref="GCodeTextReaderException"/> class.

@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common.GCode\Common.GCode.csproj" />
+    <ProjectReference Include="..\CncTools.GCode\CncTools.GCode.csproj" />
   </ItemGroup>
 
 </Project>

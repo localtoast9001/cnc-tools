@@ -3,7 +3,7 @@
 //     Copyright (C) Jon Rowlett. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Common.GCode;
+namespace CncTools.GCode;
 
 /// <summary>
 /// Describes how the machine should interpret positioning in the commands.

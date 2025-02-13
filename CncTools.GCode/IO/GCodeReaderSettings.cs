@@ -3,7 +3,7 @@
 //     Copyright (C) Jon Rowlett. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Common.GCode.IO;
+namespace CncTools.GCode.IO;
 
 /// <summary>
 /// Settings used to control behavior of the <see cref="GCodeReader"/>.

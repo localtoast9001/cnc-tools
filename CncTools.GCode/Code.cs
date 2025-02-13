@@ -3,7 +3,7 @@
 //     Copyright (C) Jon Rowlett. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Common.GCode;
+namespace CncTools.GCode;
 
 /// <summary>
 /// Code letter that starts a code word.

@@ -3,11 +3,11 @@
 //     Copyright (C) Jon Rowlett. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace Common.GCode.UnitTest;
+namespace CncTools.GCode.UnitTest;
 
 using System.IO;
 using System.Text;
-using Common.GCode.IO;
+using CncTools.GCode.IO;
 
 /// <summary>
 /// Unit tests for the <see cref="GCodeTextWriter"/> class.
