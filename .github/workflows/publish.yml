@@ -11,14 +11,20 @@ jobs:
       packages: write
       contents: read
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
-          source-url: https://nuget.pkg.github.com/localtoast9001/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - run: dotnet build --configuration Release
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build Release
+        run: dotnet build --no-restore -p:Configuration=Release
+      - name: Pack Release
+        run: dotnet pack --no-restore --no-build -p:Configuration=Release
+      - run: dotnet build --no-restore -p:Configuration=Release
       - name: Create the package
         run: dotnet pack --configuration Release
       - name: Publish the package to GPR
