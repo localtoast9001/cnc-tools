@@ -12,10 +12,10 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
+          source-url: https://nuget.pkg.github.com/localtoast9001/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Restore dependencies
