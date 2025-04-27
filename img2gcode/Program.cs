@@ -131,6 +131,10 @@ internal class Program
         rootCommand.AddOption(levelsOption);
         rootCommand.AddArgument(inputFileArgument);
 
+        var projectCommand = new Command("--project", "Load a JSON file with project settings and run.");
+        projectCommand.AddArgument(inputFileArgument);
+        rootCommand.Add(projectCommand);
+
         rootCommand.SetHandler(
             (output, input, scanOutput, width, height, feed, power, res) => ConvertImageAsync(output, input, scanOutput, width, height, feed, power, res),
             outputFileOption,
@@ -142,6 +146,30 @@ internal class Program
             powerOption,
             resOption);
 
+        projectCommand.SetHandler(
+            RunProjectAsync,
+            inputFileArgument);
+
         return await rootCommand.InvokeAsync(args);
+    }
+
+    private static async Task RunProjectAsync(FileInfo? input)
+    {
+        if (input == null)
+        {
+            Console.WriteLine("No project file specified.");
+            return;
+        }
+
+        Project project = await Project.LoadAsync(input.FullName);
+        await ConvertImageAsync(
+            new FileInfo(project.OutputFile),
+            new FileInfo(project.InputFile),
+            project.ScanOutputFile != null ? new FileInfo(project.ScanOutputFile) : null,
+            project.Width,
+            project.Height,
+            project.Feed,
+            project.Power,
+            project.Resolution);
     }
 }
