@@ -27,9 +27,11 @@ jobs:
       - run: dotnet build --no-restore -p:Configuration=Release
       - name: Create the package
         run: dotnet pack --configuration Release
+      - name: Zip img2gcode
+        run: zip -r out/bin/img2gcode.zip out/bin/img2gcode/Release/net8.0
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: out/bin/img2gcode/Release
+          files: out/bin/img2gcode.zip
       - name: Publish the package to GPR
         run: dotnet nuget push out/packages/Release/*.nupkg --source github --skip-duplicate
