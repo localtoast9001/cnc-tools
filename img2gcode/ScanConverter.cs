@@ -14,32 +14,6 @@ using SkiaSharp;
 /// </summary>
 internal class ScanConverter
 {
-    /*
-    private static readonly float[] GamutLevels = new[]
-    {
-        1.0f,
-        0.875f,
-        0.75f,
-        0.625f,
-        0.5f,
-        0.375f,
-        0.25f,
-        0f,
-    };
-    */
-
-    private static readonly float[] GamutLevels = new[]
-    {
-        1.0f,
-        1f,
-        1f,
-        0f,
-        0f,
-        0f,
-        0f,
-        0f,
-    };
-
     /// <summary>
     /// Initializes a new instance of the <see cref="ScanConverter"/> class.
     /// </summary>
@@ -93,6 +67,11 @@ internal class ScanConverter
     public int MaxPower { get; set; } = 1000;
 
     /// <summary>
+    /// Gets or sets the function to determine the power levels for the image.
+    /// </summary>
+    public PowerFunction Power { get; set; } = GamutLevelsPowerFunction.Default;
+
+    /// <summary>
     /// Gets the normalized input converted to scan rows.
     /// </summary>
     public SKBitmap? NormalizedInput { get; private set; }
@@ -106,6 +85,7 @@ internal class ScanConverter
         this.Output.Lines.Add(GCodeLine.Comment($"Image dimensions: w={this.Input.Width}px, h={this.Input.Height}px."));
         this.Output.Lines.Add(GCodeLine.Comment($"Output dimenions: x={this.Width}mm, y={this.Height}mm, res={this.Resolution}mm/pt."));
         this.Output.Lines.Add(GCodeLine.Comment($"Options: feedrate={this.FeedRate}mm/min, maxpower={this.MaxPower}."));
+        this.Output.Lines.Add(GCodeLine.Comment($"Power function: {this.Power}"));
         this.Output.Lines.Add(new GCodeLine(GCodeWordSegment.FromCommand(CommandCode.AbsoluteMode)));
         this.Output.Lines.Add(new GCodeLine(GCodeWordSegment.FromCommand(CommandCode.MillimetersSelection)));
 
@@ -201,14 +181,10 @@ internal class ScanConverter
         SKColor color = this.NormalizedInput!.GetPixel(
             x,
             y);
-        return this.Gamut(color);
+        return this.Gamut(color, x, y);
     }
 
-    private int Gamut(SKColor color)
-    {
-        int index = color.Red >> 5; // 3-bit 0-7
-        return (int)(GamutLevels[index] * this.MaxPower);
-    }
+    private int Gamut(SKColor color, int x, int y) => (int)(this.Power.GetPower(color, x, y) * this.MaxPower);
 
     private class ScanSegment
     {
