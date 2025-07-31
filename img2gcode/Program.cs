@@ -25,6 +25,7 @@ internal class Program
     /// <param name="feed">Optional feed rate.</param>
     /// <param name="power">Optional max laser power.</param>
     /// <param name="resolution">Optional resolution in scan lines/mm.</param>
+    /// <param name="powerFunc">Optional function to determine the power at a point in the image.</param>
     /// <returns>A <see cref="Task"/> for the async operation.</returns>
     internal static async Task ConvertImageAsync(
         FileInfo? outputFile,
@@ -34,7 +35,8 @@ internal class Program
         float? height,
         float? feed,
         int? power,
-        float? resolution)
+        float? resolution,
+        PowerFunction? powerFunc = null)
     {
         SKImage inputImage = SKImage.FromEncodedData(inputFile!.FullName);
         Console.WriteLine($"Loaded image w={inputImage.Width}, h={inputImage.Height}.");
@@ -65,6 +67,11 @@ internal class Program
         if (resolution.HasValue)
         {
             converter.Resolution = resolution.Value;
+        }
+
+        if (powerFunc != null)
+        {
+            converter.Power = powerFunc;
         }
 
         await Task.Run(() => converter.Convert());
@@ -116,10 +123,6 @@ internal class Program
             name: "--resolution",
             description: "Set the resolution in mm/scan line.");
         resOption.AddAlias("-r");
-        var levelsOption = new Option<int?>(
-            name: "--levels",
-            description: "Number of color levels to use.");
-        levelsOption.AddAlias("-l");
         var rootCommand = new RootCommand("Converts an image file to GCode for laser engraving.");
         rootCommand.AddOption(outputFileOption);
         rootCommand.AddOption(scanOutputFileOption);
@@ -128,8 +131,11 @@ internal class Program
         rootCommand.AddOption(feedOption);
         rootCommand.AddOption(powerOption);
         rootCommand.AddOption(resOption);
-        rootCommand.AddOption(levelsOption);
         rootCommand.AddArgument(inputFileArgument);
+
+        var projectCommand = new Command("--project", "Load a JSON file with project settings and run.");
+        projectCommand.AddArgument(inputFileArgument);
+        rootCommand.Add(projectCommand);
 
         rootCommand.SetHandler(
             (output, input, scanOutput, width, height, feed, power, res) => ConvertImageAsync(output, input, scanOutput, width, height, feed, power, res),
@@ -142,6 +148,33 @@ internal class Program
             powerOption,
             resOption);
 
+        projectCommand.SetHandler(
+            RunProjectAsync,
+            inputFileArgument);
+
         return await rootCommand.InvokeAsync(args);
+    }
+
+    private static async Task RunProjectAsync(FileInfo? input)
+    {
+        if (input == null)
+        {
+            Console.WriteLine("No project file specified.");
+            return;
+        }
+
+        Project project = await Project.LoadAsync(input.FullName);
+        PowerFunction powerFunc = project.GetPowerFunction();
+
+        await ConvertImageAsync(
+            project.GetOutputFileInfo(),
+            project.GetInputFileInfo(),
+            project.GetScanOutputFileInfo(),
+            project.Width,
+            project.Height,
+            project.Feed,
+            project.Power,
+            project.Resolution,
+            powerFunc);
     }
 }
