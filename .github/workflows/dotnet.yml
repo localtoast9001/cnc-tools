@@ -20,6 +20,8 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         global-json-file: global.json
+    - name: Install 7Zip
+      run: sudo apt-get install 7zip
     - name: Restore dependencies
       run: dotnet restore
     - name: Build Debug
@@ -30,11 +32,20 @@ jobs:
       run: dotnet pack --no-restore --no-build -p:Configuration=Debug
     - name: Pack Release
       run: dotnet pack --no-restore --no-build -p:Configuration=Release
+    - name: Publish img2gcode
+      run: dotnet publish --no-restore -p:Configuration=Release img2gcode/img2gcode.csproj
+    - name: Create img2gcode installer
+      run: 7z a -sfx out/bin/img2gcode-setup.exe out/bin/img2gcode/Release/net8.0/publish/*
     - name: Upload bin
       uses: actions/upload-artifact@v4
       with:
         name: bin
         path: out/bin
+    - name: Upload img2gcode installer
+      uses: actions/upload-artifact@v4
+      with:
+        name: img2gcode-setup.exe
+        path: out/bin/img2gcode-setup.exe
     - name: Upload packages
       uses: actions/upload-artifact@v4
       with:
