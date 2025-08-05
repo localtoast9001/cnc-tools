@@ -35,12 +35,17 @@ jobs:
     - name: Publish img2gcode
       run: dotnet publish --no-restore -p:Configuration=Release img2gcode/img2gcode.csproj
     - name: Create img2gcode installer
-      run: 7z a -sfx out/bin/img2gcode.exe out/bin/img2gcode/Release/net8.0/publish/*
+      run: 7z a -sfx out/bin/img2gcode-setup.exe out/bin/img2gcode/Release/net8.0/publish/*
     - name: Upload bin
       uses: actions/upload-artifact@v4
       with:
         name: bin
         path: out/bin
+    - name: Upload img2gcode installer
+      uses: actions/upload-artifact@v4
+      with:
+        name: bin
+        path: out/bin/img2gcode-setup.exe
     - name: Upload packages
       uses: actions/upload-artifact@v4
       with:
