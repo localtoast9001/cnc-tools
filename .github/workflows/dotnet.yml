@@ -44,7 +44,7 @@ jobs:
     - name: Upload img2gcode installer
       uses: actions/upload-artifact@v4
       with:
-        name: bin
+        name: img2gcode-setup.exe
         path: out/bin/img2gcode-setup.exe
     - name: Upload packages
       uses: actions/upload-artifact@v4
